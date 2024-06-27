@@ -1,13 +1,13 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { signIn, signUp } from './authThunk';
+import { forgot, signIn, signUp } from './authThunk';
 
 export interface UserInfo {
-  name: string;
-  number: string;
-  email: string;
-  password: string;
-  isAuth: boolean;
-  token: string;
+  name?: string;
+  number?: string;
+  email?: string;
+  password?: string;
+  isAuth?: boolean;
+  token?: string;
 }
 
 interface AuthState {
@@ -33,11 +33,15 @@ export const authSlice = createSlice({
     builder
       .addCase(signUp.fulfilled, (state, action: PayloadAction<UserInfo>) => {
         state.userInfo = action.payload;
-        state.userInfo.isAuth = true; // Set isAuth on userInfo
+        state.userInfo.isAuth = true; 
       })
       .addCase(signIn.fulfilled, (state, action: PayloadAction<UserInfo>) => {
         state.userInfo = action.payload;
-        state.userInfo.isAuth = true; // Set isAuth on userInfo
+        state.userInfo.isAuth = true; 
+      })
+      .addCase(forgot.fulfilled, (state, action: PayloadAction<UserInfo>) => {
+        state.userInfo = action.payload;
+        state.userInfo.isAuth = true;
       });
   },
 });

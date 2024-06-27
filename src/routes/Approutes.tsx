@@ -7,6 +7,7 @@ import PrivatRoute from './PrivatRoute';
 import {} from 'react-redux';
 import { RootState } from '../store/store';
 import { useAppSelector } from '../hooks/hooks';
+import ForgotPassword from '../components/ForgotPassword';
 
 const Approutes: React.FC = () => {
   const { isAuth } = useAppSelector((state: RootState) => state.auth.userInfo);
@@ -19,6 +20,16 @@ const Approutes: React.FC = () => {
           component={<MainPage />}
           fallbackPath={'/signIn'}
           isAuth={isAuth}
+        />
+      ),
+    },
+    {
+      path: '/passvord',
+      element: (
+        <PrivatRoute
+          component={<ForgotPassword />}
+          fallbackPath={'/'}
+          isAuth={!isAuth}
         />
       ),
     },

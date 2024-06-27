@@ -54,3 +54,27 @@ export const signIn = createAsyncThunk(
     }
   }
 );
+export const forgot = createAsyncThunk(
+  'auth/forgot',
+  async (
+    {
+      data,
+      navigate,
+    }: {
+      data: { email: string; photo: string };
+      navigate: NavigateFunction;
+    },
+    { rejectWithValue }
+  ) => {
+    try {
+      const response = await axiosInstanse.post('/auth/forgot', data);
+      navigate('/');
+      return response.data;
+    } catch (error: any) {
+      if (error.response && error.response.data) {
+        return rejectWithValue(error.response.data);
+      }
+      return rejectWithValue(error.message);
+    }
+  }
+);
