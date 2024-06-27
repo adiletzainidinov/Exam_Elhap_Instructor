@@ -76,6 +76,7 @@ const ForgotPassword = () => {
           />
         </div>
       ))}
+      <ForgotPassword/>
       <Button type="submit" variant="contained" size="large">
         Добавить
       </Button>

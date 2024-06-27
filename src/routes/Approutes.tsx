@@ -7,8 +7,8 @@ import PrivatRoute from './PrivatRoute';
 import {} from 'react-redux';
 import { RootState } from '../store/store';
 import { useAppSelector } from '../hooks/hooks';
-import ForgotPassword from '../components/ForgotPassword';
-import ResetPassword from '../components/ResetPassword';
+import ForgotPassword from '../page/ForgotPassword';
+import ResetPassword from '../page/ResetPassword';
 
 const Approutes: React.FC = () => {
   const { isAuth } = useAppSelector((state: RootState) => state.auth.userInfo);

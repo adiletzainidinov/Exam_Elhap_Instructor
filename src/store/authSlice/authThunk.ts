@@ -60,7 +60,7 @@ export const logout = createAsyncThunk(
   async ({ navigate }: { navigate: NavigateFunction }) => {
     try {
       const response = await axiosInstanse.post('/auth/logout');
-      navigate('/signIn'); 
+      navigate('/signIn');
       return response.data;
     } catch (error: any) {
       return error.message;
@@ -85,6 +85,26 @@ export const forgot = createAsyncThunk(
       navigate('/reset');
       console.log(response.data);
       return response.data;
+    } catch (error: any) {
+      if (error.response && error.response.data) {
+        return rejectWithValue(error.response.data);
+      }
+      return rejectWithValue(error.message);
+    }
+  }
+);
+
+interface ResetPasswordPayload {
+  token: string;
+  newPassword: string;
+}
+
+export const resetPassword = createAsyncThunk(
+  'auth/resetPassword',
+  async (data: ResetPasswordPayload, { rejectWithValue }) => {
+    try {
+      const response = await axiosInstanse.patch('/auth/reset-password', data);
+      return response.data; // Assuming the response contains a message or other relevant data
     } catch (error: any) {
       if (error.response && error.response.data) {
         return rejectWithValue(error.response.data);

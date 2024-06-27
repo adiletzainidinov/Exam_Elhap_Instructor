@@ -8,6 +8,7 @@ export interface UserInfo {
   password?: string;
   isAuth: boolean;
   token?: string;
+  message: string | null;
 }
 
 interface AuthState {
@@ -22,6 +23,8 @@ const initialState: AuthState = {
     password: '',
     isAuth: false,
     token: '',
+    message:  null,
+    
   },
 };
 

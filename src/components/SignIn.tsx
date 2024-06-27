@@ -3,7 +3,7 @@ import React from 'react';
 import { useForm, SubmitHandler } from 'react-hook-form';
 import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
-import { useAppDispatch } from '../hooks/hooks';
+import { useAppDispatch, useAppSelector } from '../hooks/hooks';
 import { signIn } from '../store/authSlice/authThunk'; // Импортируйте signIn
 import { useNavigate } from 'react-router-dom'; // Импортируйте useNavigate
 
@@ -31,29 +31,39 @@ const schema = yup
   .object()
   .shape({
     email: yup.string().email('Неверная почта').required('Напишите email'),
-    password: yup
-      .string()
-      .required('Введите пароль'),
+    password: yup.string().required('Введите пароль'),
   })
   .required();
 
 const SignIn: React.FC = () => {
   const dispatch = useAppDispatch();
-  const navigate = useNavigate(); // Используйте useNavigate
+  const navigate = useNavigate();
+  const { isAuth } = useAppSelector((state) => state.auth.userInfo);
 
-  const { register, handleSubmit, formState: { errors } } = useForm<IFormInput>({
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<IFormInput>({
     resolver: yupResolver(schema),
   });
 
   const onSubmit: SubmitHandler<IFormInput> = async (data) => {
     try {
       console.log(data, 'data');
-      dispatch(signIn({ data, navigate })); // Передайте navigate
+      dispatch(signIn({ data, navigate }));
     } catch (error) {
       console.error('Error during signIn:', error);
     }
   };
 
+  const handleClick = () => {
+    if (isAuth) {
+      navigate('/');
+    } else {
+      console.log('User is not authenticated');
+    }
+  };
   return (
     <Box
       component="form"
@@ -76,6 +86,9 @@ const SignIn: React.FC = () => {
       ))}
       <Button type="submit" variant="contained" size="large">
         Войти
+      </Button>
+      <Button onClick={handleClick} type="button" variant="text" size="large">
+        Забыли пороль
       </Button>
     </Box>
   );
