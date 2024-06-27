@@ -3,7 +3,7 @@ import React from 'react';
 import { useForm, SubmitHandler } from 'react-hook-form';
 import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
-import { useAppDispatch, useAppSelector } from '../hooks/hooks';
+import { useAppDispatch} from '../hooks/hooks';
 import { signIn } from '../store/authSlice/authThunk'; // Импортируйте signIn
 import { useNavigate } from 'react-router-dom'; // Импортируйте useNavigate
 
@@ -38,7 +38,6 @@ const schema = yup
 const SignIn: React.FC = () => {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
-  const { isAuth } = useAppSelector((state) => state.auth.userInfo);
 
   const {
     register,
@@ -58,11 +57,7 @@ const SignIn: React.FC = () => {
   };
 
   const handleClick = () => {
-    if (isAuth) {
-      navigate('/');
-    } else {
-      console.log('User is not authenticated');
-    }
+      navigate('/passvord');
   };
   return (
     <Box
