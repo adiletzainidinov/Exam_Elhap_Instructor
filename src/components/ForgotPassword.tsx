@@ -8,7 +8,7 @@ import { useNavigate } from 'react-router-dom';
 
 export interface IFormInput {
   email: string;
-  photo: string;
+  frontEndUrl: string;
 }
 
 const INPUT_FIELD = [
@@ -19,8 +19,8 @@ const INPUT_FIELD = [
     autoComplete: 'email',
   },
   {
-    name: 'photo',
-    label: 'Фото (URL)',
+    name: 'frontEndUrl',
+    label: 'frontEndUrl',
     type: 'text',
     autoComplete: 'url',
   },
@@ -30,7 +30,7 @@ const schema = yup
   .object()
   .shape({
     email: yup.string().email('Неверная почта').required('Напишите email'),
-    photo: yup
+    frontEndUrl: yup
       .string()
       .required('Введите URL'),
   })

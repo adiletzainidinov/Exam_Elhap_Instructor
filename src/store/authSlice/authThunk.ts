@@ -54,6 +54,20 @@ export const signIn = createAsyncThunk(
     }
   }
 );
+
+export const logout = createAsyncThunk(
+  'auth/logout',
+  async ({ navigate }: { navigate: NavigateFunction }) => {
+    try {
+      const response = await axiosInstanse.post('/auth/logout');
+      navigate('/signIn'); 
+      return response.data;
+    } catch (error: any) {
+      return error.message;
+    }
+  }
+);
+
 export const forgot = createAsyncThunk(
   'auth/forgot',
   async (
@@ -61,14 +75,15 @@ export const forgot = createAsyncThunk(
       data,
       navigate,
     }: {
-      data: { email: string; photo: string };
+      data: { email: string; frontEndUrl: string };
       navigate: NavigateFunction;
     },
     { rejectWithValue }
   ) => {
     try {
       const response = await axiosInstanse.post('/auth/forgot', data);
-      navigate('/');
+      navigate('/reset');
+      console.log(response.data);
       return response.data;
     } catch (error: any) {
       if (error.response && error.response.data) {

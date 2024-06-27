@@ -3,27 +3,27 @@ import React from 'react';
 import { useForm, SubmitHandler } from 'react-hook-form';
 import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
-import { signIn } from '../store/authSlice/authThunk';
-import { useNavigate } from 'react-router-dom';
 import { useAppDispatch } from '../hooks/hooks';
+import { signIn } from '../store/authSlice/authThunk'; // Импортируйте signIn
+import { useNavigate } from 'react-router-dom'; // Импортируйте useNavigate
 
-interface IFormInput {
+export interface IFormInput {
   email: string;
   password: string;
-  userName?: string; 
-  photo?: string; 
 }
 
 const INPUT_FIELD = [
   {
     name: 'email',
     label: 'Email',
-    type: 'email',
+    type: 'text',
+    autoComplete: 'email',
   },
   {
     name: 'password',
     label: 'Пароль',
     type: 'password',
+    autoComplete: 'current-password',
   },
 ];
 
@@ -33,31 +33,25 @@ const schema = yup
     email: yup.string().email('Неверная почта').required('Напишите email'),
     password: yup
       .string()
-      .min(6, 'Пароль должен быть больше 6 символов')
-      .max(16, 'Пароль должен быть меньше 16 символов')
-      .required('Напишите пароль!'),
+      .required('Введите пароль'),
   })
   .required();
 
 const SignIn: React.FC = () => {
-  const navigate = useNavigate();
   const dispatch = useAppDispatch();
+  const navigate = useNavigate(); // Используйте useNavigate
 
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-  } = useForm<IFormInput>({
+  const { register, handleSubmit, formState: { errors } } = useForm<IFormInput>({
     resolver: yupResolver(schema),
   });
 
-  const onSubmit: SubmitHandler<IFormInput> = (data) => {
-    console.log(data, 'data');
-    dispatch(signIn({ data, navigate }));
-  };
-
-  const forgotPassword = () => {
-    navigate('/passvord');
+  const onSubmit: SubmitHandler<IFormInput> = async (data) => {
+    try {
+      console.log(data, 'data');
+      dispatch(signIn({ data, navigate })); // Передайте navigate
+    } catch (error) {
+      console.error('Error during signIn:', error);
+    }
   };
 
   return (
@@ -75,20 +69,13 @@ const SignIn: React.FC = () => {
             {...register(item.name as keyof IFormInput)}
             error={!!errors[item.name as keyof IFormInput]}
             helperText={errors[item.name as keyof IFormInput]?.message}
+            autoComplete={item.autoComplete}
             fullWidth
           />
         </div>
       ))}
       <Button type="submit" variant="contained" size="large">
         Войти
-      </Button>
-      <Button
-        onClick={forgotPassword}
-        type="button"
-        variant="text"
-        size="large"
-      >
-        Забыли пороль
       </Button>
     </Box>
   );
