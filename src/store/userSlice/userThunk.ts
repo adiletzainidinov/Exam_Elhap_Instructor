@@ -2,6 +2,7 @@ import { createAsyncThunk } from "@reduxjs/toolkit";
 import { axiosInstanse } from "../../config/axiosInstance";
 
 interface UserProfile {
+ profile: {
   id: string;
   userName: string;
   role: string;
@@ -10,6 +11,7 @@ interface UserProfile {
   photo: string;
   createdAt: string;
   updatedAt: string;
+ }
 }
 
 export const fetchUser = createAsyncThunk(
@@ -17,7 +19,7 @@ export const fetchUser = createAsyncThunk(
   async (_, { rejectWithValue }) => {
     try {
       const response = await axiosInstanse.get<UserProfile>("/auth/user");
-      return response.data;
+      return response.data.profile;
     } catch (error: any) {
       if (error.response && error.response.status === 401) {
       }

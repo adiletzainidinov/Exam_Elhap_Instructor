@@ -32,7 +32,12 @@ const UserProfileComponent: React.FC = () => {
       <h2>User Profile</h2>
       <p>ID: {profile.id}</p>
       <p>Username: {profile.userName}</p>
-      <p>Email: {profile.email}</p>
+      <p>Email: {profile.role}</p>
+      <p>{profile.email}</p>
+      <p>{profile.isActive}</p>
+      <p><img src={profile.photo} alt="" /></p>
+      <p>{profile.createdAt}</p>
+      <p>{profile.updatedAt}</p>
     </div>
   );
 };

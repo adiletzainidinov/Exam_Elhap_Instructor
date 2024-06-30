@@ -1,6 +1,7 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import { axiosInstanse } from '../../config/axiosInstance';
 import { NavigateFunction } from 'react-router-dom';
+import { isAuthAdi } from './authSlice';
 
 interface SignUpData {
   email: string;
@@ -57,9 +58,10 @@ export const signIn = createAsyncThunk(
 
 export const logout = createAsyncThunk(
   'auth/logout',
-  async ({ navigate }: { navigate: NavigateFunction }) => {
+  async ({ navigate }: { navigate: NavigateFunction, },{dispatch}) => {
     try {
       const response = await axiosInstanse.post('/auth/logout');
+      dispatch(isAuthAdi())
       navigate('/signIn');
       return response.data;
     } catch (error: any) {
@@ -104,7 +106,7 @@ export const resetPassword = createAsyncThunk(
   async (data: ResetPasswordPayload, { rejectWithValue }) => {
     try {
       const response = await axiosInstanse.patch('/auth/reset-password', data);
-      return response.data; // Assuming the response contains a message or other relevant data
+      return response.data; 
     } catch (error: any) {
       if (error.response && error.response.data) {
         return rejectWithValue(error.response.data);

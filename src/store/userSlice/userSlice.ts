@@ -1,6 +1,6 @@
-import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { UserProfile, UserState } from './userSlice.d';
-import { fetchUser } from "./userThunk";
+import { fetchUser } from './userThunk';
 
 const initialState: UserState = {
   profile: null,
@@ -9,7 +9,7 @@ const initialState: UserState = {
 };
 
 export const userSlice = createSlice({
-  name: "user",
+  name: 'user',
   initialState,
   reducers: {
     clearUser(state) {
@@ -24,11 +24,14 @@ export const userSlice = createSlice({
         state.loading = true;
         state.error = null;
       })
-      .addCase(fetchUser.fulfilled, (state, action: PayloadAction<UserProfile>) => {
-        state.loading = false;
-        state.profile = action.payload;
-        state.error = null;
-      })
+      .addCase(
+        fetchUser.fulfilled,
+        (state, action: PayloadAction<UserProfile>) => {
+          state.loading = false;
+          state.profile = action.payload;
+          state.error = null;
+        }
+      )
       .addCase(fetchUser.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload as string;

@@ -61,11 +61,10 @@ const SignUp: React.FC = () => {
 
   const onSubmit: SubmitHandler<IFormInput> = async (data) => {
     try {
-      console.log(data, 'data');
-      await dispatch(signUp({data, navigate})); // Исправлено на асинхронный вызов и ожидание результата
+      // console.log(data, 'data');
+      await dispatch(signUp({data, navigate})); 
     } catch (error) {
       console.error('Error during signUp:', error);
-      // Handle error
     }
   };
 

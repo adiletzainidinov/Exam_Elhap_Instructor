@@ -7,9 +7,9 @@ export const axiosInstanse = axios.create({
 
 axiosInstanse.interceptors.request.use(
   function (config) {
-    const { token } = store.getState().auth.userInfo;
-    if (token) {
-      config.headers.Authorization = `Bearer ${token}`;
+    const { accessToken } = store.getState().auth.userInfo;
+    if (accessToken) {
+      config.headers.Authorization = `Bearer ${accessToken}`;
     }
     return config;
   },

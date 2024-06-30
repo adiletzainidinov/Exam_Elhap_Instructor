@@ -25,7 +25,7 @@ const Approutes: React.FC = () => {
       ),
     },
     {
-      path: '/passvord',
+      path: '/password',
       element: (
         <PrivatRoute
           component={<ForgotPassword />}
@@ -35,7 +35,7 @@ const Approutes: React.FC = () => {
       ),
     },
     {
-      path: '/reset',
+      path: '/auth/reset-password',
       element: (
         <PrivatRoute
           component={<ResetPassword />}

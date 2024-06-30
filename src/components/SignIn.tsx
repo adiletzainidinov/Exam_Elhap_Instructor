@@ -6,6 +6,7 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import { useAppDispatch} from '../hooks/hooks';
 import { signIn } from '../store/authSlice/authThunk'; // Импортируйте signIn
 import { useNavigate } from 'react-router-dom'; // Импортируйте useNavigate
+import { isAuthAdi } from '../store/authSlice/authSlice';
 
 export interface IFormInput {
   email: string;
@@ -57,7 +58,7 @@ const SignIn: React.FC = () => {
   };
 
   const handleClick = () => {
-      navigate('/passvord');
+      navigate('/password');
   };
   return (
     <Box

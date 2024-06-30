@@ -9,6 +9,9 @@ export interface UserInfo {
   isAuth: boolean;
   token?: string;
   message: string | null;
+  accessToken: string;
+  accessTokenExpiration: string;
+  refreshToken: string;
 }
 
 interface AuthState {
@@ -23,24 +26,39 @@ const initialState: AuthState = {
     password: '',
     isAuth: false,
     token: '',
-    message:  null,
-    
+    message: null,
+    accessToken: '',
+    accessTokenExpiration: '',
+    refreshToken: '',
   },
 };
 
 export const authSlice = createSlice({
   name: 'auth',
   initialState,
-  reducers: {},
+  reducers: {
+    isAuthAdi: (state) => {
+      state.userInfo.isAuth = !state.userInfo.isAuth;
+    },
+  },
   extraReducers: (builder) => {
     builder
       .addCase(signUp.fulfilled, (state, action: PayloadAction<UserInfo>) => {
         state.userInfo = action.payload;
-        state.userInfo.isAuth = true; 
+        state.userInfo.isAuth = true;
+        state.userInfo.accessToken = action.payload.accessToken;
+        state.userInfo.accessTokenExpiration =
+          action.payload.accessTokenExpiration;
+        state.userInfo.refreshToken = action.payload.refreshToken;
       })
       .addCase(signIn.fulfilled, (state, action: PayloadAction<UserInfo>) => {
         state.userInfo = action.payload;
-        state.userInfo.isAuth = true; 
+        state.userInfo.isAuth = true;
+                state.userInfo.accessToken = action.payload.accessToken;
+        state.userInfo.accessTokenExpiration =
+          action.payload.accessTokenExpiration;
+        state.userInfo.refreshToken = action.payload.refreshToken;
+        
       })
       .addCase(forgot.fulfilled, (state, action: PayloadAction<UserInfo>) => {
         state.userInfo = action.payload;
@@ -49,5 +67,4 @@ export const authSlice = createSlice({
   },
 });
 
-//
-//
+export const { isAuthAdi } = authSlice.actions;
