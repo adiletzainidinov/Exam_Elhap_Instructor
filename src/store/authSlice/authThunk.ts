@@ -115,3 +115,18 @@ export const resetPassword = createAsyncThunk(
     }
   }
 );
+
+export const refresh = createAsyncThunk(
+  'auth/resetPassword',
+  async (data: any, { rejectWithValue }) => {
+    try {
+      const response = await axiosInstanse.patch('/auth/refresh', data);
+      return response.data; 
+    } catch (error: any) {
+      if (error.response && error.response.data) {
+        return rejectWithValue(error.response.data);
+      }
+      return rejectWithValue(error.message);
+    }
+  }
+);

@@ -1,10 +1,11 @@
-import { Box, Button, TextField } from '@mui/material';
+import { Box, Button, TextField, Typography } from '@mui/material';
 import { useForm, SubmitHandler } from 'react-hook-form';
 import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useAppDispatch } from '../hooks/hooks';
 import { forgot } from '../store/authSlice/authThunk';
 import { useNavigate } from 'react-router-dom';
+import { styled } from '@mui/material/styles';
 
 export interface IFormInput {
   email: string;
@@ -30,9 +31,7 @@ const schema = yup
   .object()
   .shape({
     email: yup.string().email('Неверная почта').required('Напишите email'),
-    frontEndUrl: yup
-      .string()
-      .required('Введите URL'),
+    frontEndUrl: yup.string().required('Введите URL'),
   })
   .required();
 
@@ -56,12 +55,19 @@ const ForgotPassword = () => {
     }
   };
 
+  const handleToComeIn = () => {
+    navigate('/signIn');
+  };
+
+  const handleRegister = () => {
+    navigate('/signUp');
+  };
+
   return (
-    <Box
-      component="form"
-      onSubmit={handleSubmit(onSubmit)}
-      sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}
-    >
+    <StyledForm component="form" onSubmit={handleSubmit(onSubmit)}>
+      <Typography variant="h4" component="h1" gutterBottom>
+        Восстановление пароля
+      </Typography>
       {INPUT_FIELD.map((item) => (
         <div key={item.name}>
           <TextField
@@ -79,8 +85,39 @@ const ForgotPassword = () => {
       <Button type="submit" variant="contained" size="large">
         Добавить
       </Button>
-    </Box>
+      <Box sx={{ display: 'flex', justifyContent: 'space-between', mt: 2 }}>
+        <Button
+          onClick={handleToComeIn}
+          type="button"
+          variant="text"
+          size="large"
+        >
+          Войти
+        </Button>
+        <Button
+          onClick={handleRegister}
+          type="button"
+          variant="text"
+          size="large"
+        >
+          Зарегистрироватся
+        </Button>
+      </Box>
+    </StyledForm>
   );
 };
 
 export default ForgotPassword;
+
+const StyledForm = styled(Box)(({ theme }) => ({
+  display: 'flex',
+  flexDirection: 'column',
+  gap: theme.spacing(2),
+  maxWidth: '400px',
+  margin: 'auto',
+  padding: theme.spacing(4),
+  backgroundColor: '#f5f5f5',
+  borderRadius: theme.shape.borderRadius,
+  boxShadow: theme.shadows[3],
+  marginTop: '150px',
+}));

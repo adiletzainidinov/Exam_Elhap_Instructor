@@ -2,10 +2,11 @@ import React from 'react';
 import { useForm, SubmitHandler } from 'react-hook-form';
 import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
-import { useSearchParams } from 'react-router-dom';
-import { Box, Button, TextField } from '@mui/material';
+import { useNavigate, useSearchParams } from 'react-router-dom';
+import { Box, Button, TextField, Typography } from '@mui/material';
 import { useAppDispatch, useAppSelector } from '../hooks/hooks';
 import { resetPassword } from '../store/authSlice/authThunk';
+import { styled } from '@mui/material/styles';
 
 interface IFormInput {
   newPassword: string;
@@ -31,7 +32,7 @@ const ResetPasswordPage: React.FC = () => {
   const [searchParams] = useSearchParams();
   const token = searchParams.get('token');
   const dispatch = useAppDispatch();
-  // const navigate = useNavigate();
+  const navigate = useNavigate();
   const { message } = useAppSelector((state) => state.auth.userInfo);
 
   const {
@@ -48,28 +49,19 @@ const ResetPasswordPage: React.FC = () => {
     }
   };
 
+  const handleToComeIn = () => {
+    navigate('/signIn');
+  };
+
+  const handleRegister = () => {
+    navigate('/signUp');
+  };
+
   return (
-    <Box
-      component="form"
-      onSubmit={handleSubmit(onSubmit)}
-      sx={{
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'center',
-        maxWidth: 400,
-        margin: 'auto',
-        padding: 2,
-        border: '1px solid #ccc',
-        borderRadius: 8,
-        boxShadow: '0px 2px 4px rgba(0, 0, 0, 0.1)',
-        '& .MuiTextField-root': {
-          marginBottom: 20,
-        },
-        '& .MuiButton-root': {
-          marginTop: 20,
-        },
-      }}
-    >
+    <StyledForm component="form" onSubmit={handleSubmit(onSubmit)}>
+      <Typography variant="h4" component="h1" gutterBottom>
+        Сброс пароля
+      </Typography>
       <TextField
         label="Новый пароль"
         type="password"
@@ -90,9 +82,27 @@ const ResetPasswordPage: React.FC = () => {
         fullWidth
         variant="outlined"
       />
-      <Button type="submit" variant="contained" size="large">
+      <Button fullWidth type="submit" variant="contained" size="large">
         Сбросить пароль
       </Button>
+      <Box sx={{ display: 'flex', justifyContent: 'space-between', mt: 2 ,width: 400}}>
+        <Button
+          onClick={handleToComeIn}
+          type="button"
+          variant="text"
+          size="large"
+        >
+          Войти
+        </Button>
+        <Button
+          onClick={handleRegister}
+          type="button"
+          variant="text"
+          size="large"
+        >
+          Зарегистрироватся
+        </Button>
+      </Box>
       {message && (
         <h1
           style={{
@@ -104,8 +114,27 @@ const ResetPasswordPage: React.FC = () => {
           {message}
         </h1>
       )}
-    </Box>
+    </StyledForm>
   );
 };
 
 export default ResetPasswordPage;
+
+const StyledForm = styled(Box)(({ theme }) => ({
+  display: 'flex',
+  flexDirection: 'column',
+  alignItems: 'center',
+  maxWidth: 400,
+  margin: 'auto',
+  padding: theme.spacing(4),
+  border: '1px solid #ccc',
+  borderRadius: theme.shape.borderRadius,
+  boxShadow: theme.shadows[3],
+  '& .MuiTextField-root': {
+    marginBottom: theme.spacing(2.5),
+  },
+  '& .MuiButton-root': {
+    marginTop: theme.spacing(2.5),
+  },
+  marginTop: '150px',
+}));

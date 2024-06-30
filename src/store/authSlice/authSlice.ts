@@ -1,5 +1,5 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { forgot, signIn, signUp } from './authThunk';
+import { forgot, signIn, signUp, refresh } from './authThunk';
 
 export interface UserInfo {
   name?: string;
@@ -54,15 +54,22 @@ export const authSlice = createSlice({
       .addCase(signIn.fulfilled, (state, action: PayloadAction<UserInfo>) => {
         state.userInfo = action.payload;
         state.userInfo.isAuth = true;
-                state.userInfo.accessToken = action.payload.accessToken;
+        state.userInfo.accessToken = action.payload.accessToken;
         state.userInfo.accessTokenExpiration =
           action.payload.accessTokenExpiration;
         state.userInfo.refreshToken = action.payload.refreshToken;
-        
       })
       .addCase(forgot.fulfilled, (state, action: PayloadAction<UserInfo>) => {
         state.userInfo = action.payload;
         state.userInfo.isAuth = true;
+      })
+      .addCase(refresh.fulfilled, (state, action: PayloadAction<UserInfo>) => {
+        state.userInfo = action.payload;
+        state.userInfo.isAuth = true;
+        state.userInfo.accessToken = action.payload.accessToken;
+        state.userInfo.accessTokenExpiration =
+          action.payload.accessTokenExpiration;
+        state.userInfo.refreshToken = action.payload.refreshToken;
       });
   },
 });

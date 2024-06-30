@@ -1,12 +1,12 @@
-import { Box, Button, TextField } from '@mui/material';
+import { Box, Button, TextField, Typography } from '@mui/material';
 import React from 'react';
 import { useForm, SubmitHandler } from 'react-hook-form';
 import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
-import { useAppDispatch} from '../hooks/hooks';
-import { signIn } from '../store/authSlice/authThunk'; // Импортируйте signIn
-import { useNavigate } from 'react-router-dom'; // Импортируйте useNavigate
-import { isAuthAdi } from '../store/authSlice/authSlice';
+import { useAppDispatch } from '../hooks/hooks';
+import { signIn } from '../store/authSlice/authThunk';
+import { useNavigate } from 'react-router-dom';
+import { styled } from '@mui/material/styles';
 
 export interface IFormInput {
   email: string;
@@ -58,14 +58,18 @@ const SignIn: React.FC = () => {
   };
 
   const handleClick = () => {
-      navigate('/password');
+    navigate('/password');
   };
+
+  const handleRegister = () => {
+    navigate('/signUp');
+  };
+
   return (
-    <Box
-      component="form"
-      onSubmit={handleSubmit(onSubmit)}
-      sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}
-    >
+    <StyledForm component="form" onSubmit={handleSubmit(onSubmit)}>
+      <Typography variant="h4" component="h1" gutterBottom>
+        Войти
+      </Typography>
       {INPUT_FIELD.map((item) => (
         <div key={item.name}>
           <TextField
@@ -83,11 +87,34 @@ const SignIn: React.FC = () => {
       <Button type="submit" variant="contained" size="large">
         Войти
       </Button>
-      <Button onClick={handleClick} type="button" variant="text" size="large">
-        Забыли пороль
-      </Button>
-    </Box>
+      <Box sx={{ display: 'flex', justifyContent: 'space-between', mt: 2 }}>
+        <Button onClick={handleClick} type="button" variant="text" size="large">
+          Забыли пороль?
+        </Button>
+        <Button
+          onClick={handleRegister}
+          type="button"
+          variant="text"
+          size="large"
+        >
+          Зарегистрироватся
+        </Button>
+      </Box>
+    </StyledForm>
   );
 };
 
 export default SignIn;
+
+const StyledForm = styled(Box)(({ theme }) => ({
+  display: 'flex',
+  flexDirection: 'column',
+  gap: theme.spacing(2),
+  maxWidth: '400px',
+  margin: 'auto',
+  padding: theme.spacing(4),
+  backgroundColor: '#f5f5f5',
+  borderRadius: theme.shape.borderRadius,
+  boxShadow: theme.shadows[3],
+  marginTop: '150px',
+}));

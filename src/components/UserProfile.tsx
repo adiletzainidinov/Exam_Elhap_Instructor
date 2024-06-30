@@ -2,6 +2,15 @@ import React, { useEffect } from 'react';
 import { clearUser } from '../store/userSlice/userSlice';
 import { useAppDispatch, useAppSelector } from '../hooks/hooks';
 import { fetchUser } from '../store/userSlice/userThunk';
+import {
+  Avatar,
+  Card,
+  CardContent,
+  CircularProgress,
+  Grid,
+  Typography,
+} from '@mui/material';
+import { styled } from '@mui/material/styles';
 
 const UserProfileComponent: React.FC = () => {
   const dispatch = useAppDispatch();
@@ -16,7 +25,11 @@ const UserProfileComponent: React.FC = () => {
   }, [dispatch]);
 
   if (loading) {
-    return <p>Loading user profile...</p>;
+    return (
+      <p>
+        <CircularProgress sx={{ position: 'relative', ml: 52 }} />
+      </p>
+    );
   }
 
   if (error) {
@@ -28,18 +41,46 @@ const UserProfileComponent: React.FC = () => {
   }
 
   return (
-    <div>
-      <h2>User Profile</h2>
-      <p>ID: {profile.id}</p>
-      <p>Username: {profile.userName}</p>
-      <p>Email: {profile.role}</p>
-      <p>{profile.email}</p>
-      <p>{profile.isActive}</p>
-      <p><img src={profile.photo} alt="" /></p>
-      <p>{profile.createdAt}</p>
-      <p>{profile.updatedAt}</p>
-    </div>
+    <StyledCard>
+      <CardContent>
+        <Grid container spacing={2} alignItems="center">
+          <Grid item>
+            <Avatar
+              alt={profile.userName}
+              src={profile.photo}
+              sx={{ width: 56, height: 56 }}
+            />
+          </Grid>
+          <Grid item>
+            <Typography variant="h5" component="div">
+              {profile.userName}
+            </Typography>
+            <Typography variant="body2" color="text.secondary">
+              {profile.email}
+            </Typography>
+            <Typography variant="body2" color="text.secondary">
+              Role: {profile.role}
+            </Typography>
+            <Typography variant="body2" color="text.secondary">
+              Active: {profile.isActive ? 'Yes' : 'No'}
+            </Typography>
+            <Typography variant="body2" color="text.secondary">
+              Created At: {profile.createdAt}
+            </Typography>
+            <Typography variant="body2" color="text.secondary">
+              Updated At: {profile.updatedAt}
+            </Typography>
+          </Grid>
+        </Grid>
+      </CardContent>
+    </StyledCard>
   );
 };
 
 export default UserProfileComponent;
+
+const StyledCard = styled(Card)(({ theme }) => ({
+  maxWidth: 600,
+  margin: 'auto',
+  marginTop: theme.spacing(4),
+}));
